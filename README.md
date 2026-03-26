@@ -2,22 +2,22 @@
 
 ## Deskripsi Kasus
 Kasus yang saya ambil untuk tugas ini adalah sistem karyawan restauran ibu saya. Berikut penjelasan sistem karyawan restauran tersebut:
-- Terdapat tiga tugas utama karyawan di restauran ini, yaitu pemasak, kasir dan pembuat minum, dan pelayan.
-- Karyawan dibagi menjadi dua tim dengan tiap tim terdiri dari tiga anggota.
-- Jam kerja tiap tim dibagi ke dalam sistem shift:
+* Terdapat tiga tugas utama karyawan di restauran ini, yaitu pemasak, kasir dan pembuat minum, dan pelayan.
+* Karyawan dibagi menjadi dua tim dengan tiap tim terdiri dari tiga anggota.
+* Jam kerja tiap tim dibagi ke dalam sistem shift:
   1. Shift 1 mulai pukul 11.00 - 17.00, shift 2 mulai pukul 15.00 - 21.00.
   2. Rotasi jam kerja (shift) dilakukan tiap 2 minggu sekali.
   3. Pada saat pukul 15.00 - 17.00 ketika kedua shift hadir di restauran, karyawan pada shift 2 memiliki tugas khusus berupa pengadaan stok dan membersihkan lokasi.
-- Gaji dihitung berdasarkan jam kerja dan tambahan bonus tiap jam sebesar 10% dari gaji per jam.
-- Evaluasi pekerja dilakukan oleh ibu saya (pemilik / manajer) tiap satu minggu sekali. 
-- Bonus tahunan berlaku jika restauran memenuhi target tahunan. 
+* Gaji dihitung berdasarkan jam kerja dan tambahan bonus tiap jam sebesar 10% dari gaji per jam.
+* Evaluasi pekerja dilakukan oleh ibu saya (pemilik / manajer) tiap satu minggu sekali. 
+* Bonus tahunan berlaku jika restauran memenuhi target tahunan. 
 
 ## Class Diagram
-- Membentuk abstract class untuk karyawan. Menambahkan variabel untuk karyawan dengan atribut protected supaya class anak (tugas tiap pekerja) dapat mengakses data tersebut secara langsung tanpa pihak luar (encapsulation). Menambahkan total gaji serta abstract method (```work()*```) sebagai kewajiban kerja bagi staf namun implementasi spesifiknya diatur pada masing-masing tugas pekerjaan. 
-- Membentuk Enumeration (data statis) seperti nama tim dan tipe shift untuk menjamin konsistensi dan kepastian data karena nama tim dan tipe shift bersifat statis (tidak berubah).
-- Membentuk interface seperti bonus dan pekerjaan khusus untuk shift 2 pada pukul 15.00-17.00.
-- Membentuk concrete class, memberikan tugas untuk tiap pekerja (pemasak, kasir dan pembuat minum, dan pelayan).
-- Membuat class untuk sistem manajer yang dapat mengelola daftar 6 staff serta mengendalikan rotasi shift.
+* Membentuk abstract class untuk karyawan. Menambahkan variabel untuk karyawan dengan atribut protected supaya class anak (tugas tiap pekerja) dapat mengakses data tersebut secara langsung tanpa pihak luar (encapsulation). Menambahkan total gaji serta abstract method (```work()*```) sebagai kewajiban kerja bagi staf namun implementasi spesifiknya diatur pada masing-masing tugas pekerjaan. 
+* Membentuk Enumeration (data statis) seperti nama tim dan tipe shift untuk menjamin konsistensi dan kepastian data karena nama tim dan tipe shift bersifat statis (tidak berubah).
+* Membentuk interface seperti bonus dan pekerjaan khusus untuk shift 2 pada pukul 15.00-17.00.
+* Membentuk concrete class, memberikan tugas untuk tiap pekerja (pemasak, kasir dan pembuat minum, dan pelayan).
+* Membuat class untuk sistem manajer yang dapat mengelola daftar 6 staff serta mengendalikan rotasi shift.
 
 Berikut bentuk code Mermaid.ai untuk class diagram tersebut:
 ``` Mermaid
@@ -289,5 +289,22 @@ public class Main {
 <img width="222" height="77" alt="Screenshot 2026-03-26 131725" src="https://github.com/user-attachments/assets/2ffa7dfc-0997-4874-95a1-f806bdd2eaa3" />
 
 ## Prinsip OOP yang digunakan
-
+1. Abstraction (abstraksi)
+   Penerapan pada ```abstract class Employee``` dan ```interface Shift2Task```.
+   class-class tersebut hanya sebagai template, tidak menjelaskan cara tetapi hanya memberi standar atau basis bahwa tiap pekerja wajib punya fungsi-fungsi pada abstract class.
+2. Inheritance (pewarisan)
+   Penerapan pada class ```Cook```, ```CashierBeverage```, dan ```Waiter```.
+   Semua atribut dalam kelas induk diwariskan kepada kelas anak karena tiap karyawan pasti memiliki atribut-atribut yang ada dalam kelas induk.
+3. Encapsulation (oembungkusan)
+   Penerapan private pada ManagerSystem (```private List<Employee> listStaff```):
+   Orang luar tidak bisa langsung mengubah data tersebut. Jika ingin mengubah data harus melewati metode ```addStaff()```. Manager bisa validasi perubahan data.
+   Penerapan protected pada Employee:
+   Untuk mengamankan data, misal ```protected double salary``` bukan informasi umum yang bisa diketahui orang luar, tetapi diketahui dan diolah oleh kelas turunannya. 
+5. Polymorphism (banyak bentuk)
+   Penerapan ```@Override``` pada metode ```work()``` di setiap kelas pekerja.
+   Saat ManagerSystem memanggil perintah staf.work(), hasilnya akan berubah otomatis jika objeknya adalah Cook maka ia akan memasak. Menandakan satu perintah bisa mewujudkan banyak aksi tergantung pada objek (tugas pekerja).  
+   
 ## Keunikan
+Overlap Jam 15.00-17.00: 
+Menurut saya pada bagian ini merupakan sistem yang unik. Ketika jam shift 1 masih belum selesai, shift 2 sudah hadir. Hal tersebut membuat saya bingung saat pertama kali mengetahuinya. 
+Sebelumnya saya mengira pengadaan stok dan pembersih restauran dibagi tugas ke karyawan khusus. Ternyata ibu saya membuat sistem khusus untuk shift 2 pada pukul 15.00-17.00 selama 2 jam melakukan tugas khusus, kemudian lanjut melakukan pekerjaan normal saat jam pekerja shift 1 selesai.  
