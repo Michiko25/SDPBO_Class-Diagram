@@ -94,7 +94,108 @@ classDiagram
   ManagerSystem "1" *-- "6" Employee
 ```
 
+<img width="1019" height="882" alt="image" src="https://github.com/user-attachments/assets/dd9c9297-d1c2-4da0-9ea3-383274ad0e84" />
+
 ## Kode program Java
+File ```Employee.java``` sebagai Abstract Class
+
+``` java
+abstract class Employee implements Bonus {
+    protected String idEmployee;
+    protected String name;
+    protected double salary; // gaji per jam
+    protected TeamName team;
+    protected ShiftType shiftnow;
+
+    public Employee (String id, String name, double salary, TeamName team, ShiftType shift) {
+        this.idEmployee = id;
+        this.name = name;
+        this.salary = salary;
+        this.team = team;
+        this.shiftnow = shift;
+    }
+
+    public double salaryTotal (int hour, int overtime) {
+        double pay = hour * salary;
+        double overtimePay = overtime * (salary * 0.1);
+        return pay + overtimePay;
+    }
+
+    public abstract void work();
+
+    @Override
+    public void bonusAnnually(double target) {
+        System.out.println("Bonus Annually: Tunjangan untuk " + name + "jika target " + target + "tercapai. ");
+    }
+
+    public ShiftType getShift() {
+        return shiftnow; 
+    }
+
+    public void setShift (ShiftType newShift) {
+        this.shiftnow = newShift;
+    }
+}
+```
+
+abstract class Employee sebagai template atribut staff. Variabel-variabel seperti name dan salary menggunakan protected access modifier (encapsulation). Mengimplementasikan logika perhitungan gaji melalui method salaryTotal. Menambahkan abstract method (public abstract void work()). 
+Dalam diagram sebelumnya, Employee mewujudkan interface Bonus. ```implements Bonus``` ditambahkan untuk mewariskan aturan bonus pada tiap karyawan. 
+
+File ```Work.java``` sebagai inheritance dan polymorphism
+
+```java
+class Cook extends Employee implements Shift2Task {
+    public Cook (String id, String name, double salary, TeamName team, ShiftType shift) {
+        super (id, name, salary, team, shift);
+    }
+
+    @Override
+    public void work() {}
+    public void cookOrder() {}
+
+    @Override
+    public void restock() {}
+
+    @Override
+    public void cleaning() {}
+}
+
+class CashierBeverage extends Employee implements Shift2Task {
+    public CashierBeverage (String id, String name, double salary, TeamName team, ShiftType shift) {
+        super (id, name, salary, team, shift);
+    }
+
+    @Override
+    public void work() {}
+    public void transaction() {}
+    public void makeDrink() {}
+
+    @Override
+    public void restock() {}
+
+    @Override
+    public void cleaning() {}
+}
+
+class Waiter extends Employee implements Shift2Task {
+    public Waiter(String id, String name, double salary, TeamName team, ShiftType shift) {
+        super(id, name, salary, team, shift);
+    }
+
+    @Override
+    public void work() {}
+    public void deliverOrder() {}
+    public void cleanTable() {}
+
+    @Override
+    public void restock() {}
+
+    @Override
+    public void cleaning() {}
+}
+```
+
+
 
 ## Screenshot output
 
