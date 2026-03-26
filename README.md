@@ -94,8 +94,6 @@ classDiagram
   ManagerSystem "1" *-- "6" Employee
 ```
 
-<img width="1019" height="882" alt="image" src="https://github.com/user-attachments/assets/dd9c9297-d1c2-4da0-9ea3-383274ad0e84" />
-
 ## Kode program Java
 File ```Employee.java``` sebagai Abstract Class
 
@@ -195,9 +193,100 @@ class Waiter extends Employee implements Shift2Task {
 }
 ```
 
+```extends Employee``` pada class Cook, CashierBeverage, dan Waiter menandakan bahwa class-class tersebut mewarisi seluruh atribut dan method dari class Employee. ```implements Shift2Task``` menandakan bahwa tiap class pekerja di shift2 harus berganti ke pekerjaan khusus pada pukul 15.00-17.00. Setiap kelas diberi isi method seperti ```work()```, satu perintah ini menghasilkan aksi yang berbeda tergantung tugas pekerja (polymorphism).
 
+File ```TeamnShift```
+
+```java
+enum TeamName {
+    TA, TB
+}
+
+enum ShiftType {
+    Shift1, Shift2
+}
+
+interface Bonus {
+    void bonusAnnually(double target);
+}
+
+interface Shift2Task {
+    void restock();
+    void cleaning();
+}
+```
+
+Peggunaan enumeration untuk memastikan bahwa tipe data dalam team dan shift hanya berisi nilai valid. ```interface Bonus``` untuk mendeskripsikan sistem bonus tahunan dan semua karyawan berhak mendapatkan bonus. ```interface Shift2Task``` sebagai interface spesifik untuk kelas pekerja, mendeskripsikan sistem tugas shift 2 pada pukul 15.00-17.00. 
+
+File ```Manager.java```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class Manager {
+    private List<Employee> listStaff = new ArrayList<>();
+    private int week = 1;
+
+    public void addStaff (Employee e) {
+        listStaff.add(e);
+    }
+
+    public boolean shiftRotation() {
+        if (week % 2 == 0) {
+            for (Employee e : listStaff) {
+                if (e.getShift() == ShiftType.Shift1) {
+                    e.setShift (ShiftType.Shift2);
+                }
+                else {
+                    e.setShift(ShiftType.Shift1);
+                }
+            }
+            week++;
+            return true;
+        }
+        else { 
+            week++;
+            return false; // belum saatnya rotasi
+        }
+    }
+
+    public void weekEvaluation() {}
+}
+```
+
+Menggunakan collection (```List<Employee> listStaff```) yang menampung maksimal 6 staff. Hubungan ini disebut composition. Mengimplementasikan aturan rotasi shift melalui logika ```shiftRotation()```, jika minggu genap maka shift akan bertukar.  
 
 ## Screenshot output
+Berikut hasil output code class diagram melalui ```Mermaid.ai```
+
+<img width="1019" height="882" alt="image" src="https://github.com/user-attachments/assets/dd9c9297-d1c2-4da0-9ea3-383274ad0e84" />
+
+Berikut hasil output pemrograman Java melalui file ```Main.java```
+```java
+public class Main {
+    public static void main () {
+        Manager sistem = new Manager ();
+
+        Cook staff1 = new Cook ("C1", "siA", 50, TeamName.TA, ShiftType.Shift1);
+        Waiter staff2 = new Waiter ("W02", "siB", 45, TeamName.TB, ShiftType.Shift2);
+
+        sistem.addStaff(staff1);
+        sistem.addStaff(staff2);
+
+        double gajisiA = staff1.salaryTotal(8, 2); 
+        System.out.println ("Gaji total " + staff1.name + ": Rp " + gajisiA + " ribu" );
+
+        sistem.shiftRotation(); 
+        boolean isRotated = sistem.shiftRotation();
+
+        System.out.println ("Status Rotasi: " + isRotated);
+        System.out.println ("Shift " + staff1.name + " saat ini: " + staff1.getShift());
+    }
+}
+```
+
+<img width="222" height="77" alt="Screenshot 2026-03-26 131725" src="https://github.com/user-attachments/assets/2ffa7dfc-0997-4874-95a1-f806bdd2eaa3" />
 
 ## Prinsip OOP yang digunakan
 
