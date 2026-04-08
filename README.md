@@ -94,6 +94,11 @@ classDiagram
   ManagerSystem "1" *-- "6" Employee
 ```
 
+Berikut hasil output code class diagram melalui ```Mermaid.ai```
+
+<img width="1019" height="882" alt="image" src="https://github.com/user-attachments/assets/dd9c9297-d1c2-4da0-9ea3-383274ad0e84" />
+
+
 ## Kode program Java
 File ```Employee.java``` sebagai Abstract Class
 
@@ -256,11 +261,6 @@ public class Manager {
 ```
 
 Menggunakan collection (```List<Employee> listStaff```) yang menampung maksimal 6 staff. Hubungan ini disebut composition. Mengimplementasikan aturan rotasi shift melalui logika ```shiftRotation()```, jika minggu genap maka shift akan bertukar.  
-
-## Screenshot output
-Berikut hasil output code class diagram melalui ```Mermaid.ai```
-
-<img width="1019" height="882" alt="image" src="https://github.com/user-attachments/assets/dd9c9297-d1c2-4da0-9ea3-383274ad0e84" />
 
 Berikut hasil output pemrograman Java melalui file ```Main.java```
 ```java
